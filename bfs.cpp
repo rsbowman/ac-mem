@@ -12,7 +12,7 @@
  * append all cyclic permutations of both relators
  */
 int append_cyclic_permutations(GroupQueue *q, GroupProof *gp) {
-  GroupProof new, permuted;
+  GroupProof new_gp, permuted;
   int i, j;
   int len1 = relator_length(&gp->group, 0),
     len2 = relator_length(&gp->group, 1);
@@ -22,10 +22,10 @@ int append_cyclic_permutations(GroupQueue *q, GroupProof *gp) {
     for (j = 0; j < len2; ++j) {
       if (i == 0 && j == 0)
 	continue;
-      group_proof_copy(&new, &permuted);
-      group_cyclic_permute(&new.group, 1, j);
-      group_proof_append(&new, GP_CP, i, j);
-      group_queue_push(q, &new);
+      group_proof_copy(&new_gp, &permuted);
+      group_cyclic_permute(&new_gp.group, 1, j);
+      group_proof_append(&new_gp, GP_CP, i, j);
+      group_queue_push(q, &new_gp);
     }
     group_cyclic_permute(&permuted.group, 0, 1);
   }
@@ -34,26 +34,26 @@ int append_cyclic_permutations(GroupQueue *q, GroupProof *gp) {
 
 int apply_transforms(GroupQueue *q, GroupProof *gp, GroupProof *start,
 		     Hashtable *ht, int max_length) {
-  GroupProof new;
+  GroupProof new_gp;
   int discarded = 0;
   unsigned char op, op1, op2;
 
-  group_proof_copy(&new, gp);
-  if (group_compose(&new.group, 0, 1)) {
-    if (relator_length(&new.group, 0) < max_length &&
-	hashtable_add(ht, &new.group)) {
-      group_proof_append(&new, GP_COM, 0, 1);
-      group_queue_push(q, &new);
+  group_proof_copy(&new_gp, gp);
+  if (group_compose(&new_gp.group, 0, 1)) {
+    if (relator_length(&new_gp.group, 0) < max_length &&
+    hashtable_add(ht, &new_gp.group)) {
+      group_proof_append(&new_gp, GP_COM, 0, 1);
+      group_queue_push(q, &new_gp);
     } else {
       discarded++;
     }
   }
-  group_proof_copy(&new, gp);
-  if (group_compose(&new.group, 1, 0)) {
-    if (relator_length(&new.group, 1) < max_length &&
-	hashtable_add(ht, &new.group)) {
-      group_proof_append(&new, GP_COM, 1, 0);
-      group_queue_push(q, &new);
+  group_proof_copy(&new_gp, gp);
+  if (group_compose(&new_gp.group, 1, 0)) {
+    if (relator_length(&new_gp.group, 1) < max_length &&
+    hashtable_add(ht, &new_gp.group)) {
+      group_proof_append(&new_gp, GP_COM, 1, 0);
+      group_queue_push(q, &new_gp);
     } else {
       discarded++;
     }
@@ -61,20 +61,20 @@ int apply_transforms(GroupQueue *q, GroupProof *gp, GroupProof *start,
   group_proof_last_op(gp, &op, &op1, &op2);
 
   if (op != GP_CP) {
-    group_proof_copy(&new, gp);
-    if (group_invert(&new.group, 0)) {
-      if (hashtable_add(ht, &new.group)) {
-	group_proof_append(&new, GP_INV, 0, 0);
-	group_queue_push(q, &new);
+    group_proof_copy(&new_gp, gp);
+    if (group_invert(&new_gp.group, 0)) {
+      if (hashtable_add(ht, &new_gp.group)) {
+    group_proof_append(&new_gp, GP_INV, 0, 0);
+    group_queue_push(q, &new_gp);
       } else {
 	discarded++;
       }
     }
-    group_proof_copy(&new, gp);
-    if (group_invert(&new.group, 1)) {
-      if (hashtable_add(ht, &new.group)) {
-	group_proof_append(&new, GP_INV, 1, 0);
-	group_queue_push(q, &new);
+    group_proof_copy(&new_gp, gp);
+    if (group_invert(&new_gp.group, 1)) {
+      if (hashtable_add(ht, &new_gp.group)) {
+    group_proof_append(&new_gp, GP_INV, 1, 0);
+    group_queue_push(q, &new_gp);
       } else {
 	discarded++;
       }

@@ -24,7 +24,7 @@ uint64_t bitwise_reverse(uint64_t bits) {
 }
 
 
-Relator relator_from_string(char *r) {
+Relator relator_from_string(const char *r) {
   int i = 0;
   Relator rel1 = 0;
 
@@ -41,7 +41,7 @@ Relator relator_from_string(char *r) {
 
 /* r1 & r2 should be strings in {a, b, A, B}
  */
-void group_init_from_string(Group *g, char *r1, char *r2) {
+void group_init_from_string(Group *g, const char *r1, const char *r2) {
   g->relator[0] = relator_from_string(r1);
   g->len[0] = strlen(r1);
 
@@ -154,7 +154,8 @@ void relator_cyclic_reduce_only(Group *g, int relator) {
   while (len > 1) {
     l1 = r & 3;
     l2 = LETTER_AT(r, len-1);
-    if (l1 == GEN_INV(l2)) {
+    // XXX::
+    if (l1 == (int)GEN_INV(l2)) {
       r >>= 2;  // get rid of 1st letter
       r &= ONES(2*(len - 2)); // get rid of last letter
       len -= 2;

@@ -7,8 +7,8 @@
 #include "hashtable.h"
 
 void test_bit_reverse() {
-  assert(bitwise_reverse(1<<1) == (1LL<<63));
-  assert(bitwise_reverse(1<<4) == (1LL<<58));
+  assert(bitwise_reverse(1<<1) == (1UL<<63));
+  assert(bitwise_reverse(1<<4) == (1UL<<58));
 }
 
 void test_group() {

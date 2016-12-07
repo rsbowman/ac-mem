@@ -80,7 +80,7 @@ relator_index_t ordered_tuples_four(int n) {
 }
 
 relator_index_t cumulative_tuples(relator_index_t n, relator_index_t m) {
-  int i;
+  unsigned int i;
   relator_index_t sum = 0;
 
   for (i = 1; i <= n; ++i)

@@ -57,8 +57,8 @@ typedef struct GroupProof {
 
 uint64_t bitwise_reverse(uint64_t);
 
-void group_init_from_string(Group *g, char *r1, char *r2);
-Relator relator_from_string(char *r);
+void group_init_from_string(Group *g, const char *r1, const char *r2);
+Relator relator_from_string(const char *r);
 void group_init(Group *g);
 void group_proof_init(GroupProof *gp);
 void group_print(Group *g);
